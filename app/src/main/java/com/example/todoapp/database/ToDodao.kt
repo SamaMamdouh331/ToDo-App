@@ -10,14 +10,17 @@ import androidx.room.Update
 abstract class ToDodao {
 
     @Insert
-    abstract fun addTodo(todo: ToDoEntity)
+    abstract fun addTodo(todo: Todo)
 
     @Delete
-    abstract fun deleteTodo(todo: ToDoEntity)
+    abstract fun deleteTodo(todo: Todo)
 
     @Update
-    abstract fun updateTodo(todo: ToDoEntity)
+    abstract fun updateTodo(todo: Todo)
 
     @Query("select * from Todo")
-    abstract fun getTodo(): List<ToDoEntity>
+    abstract fun getTodo(): List<Todo>
+
+    @Query("select * from Todo where date = :date  ")
+    abstract fun getTodosByDate(date: Long): List<Todo>
 }

@@ -1,16 +1,19 @@
 package com.example.todoapp
 
 import android.app.DatePickerDialog
-import android.icu.util.Calendar
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.widget.addTextChangedListener
+import com.example.todoapp.database.MyDataBase
+import com.example.todoapp.database.Todo
 import com.example.todoapp.databinding.BottomSheetBinding
+import com.example.todoapp.utilitis.clearTime
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import java.util.Calendar
 
-class AddBottomSheet : BottomSheetDialogFragment() {
+class AddBottomSheet(val onAddClick: () -> Unit) : BottomSheetDialogFragment() {
     lateinit var binding: BottomSheetBinding
     var selectedDate = Calendar.getInstance()
 
@@ -26,15 +29,29 @@ class AddBottomSheet : BottomSheetDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initSelectedDate()
-        //updateDateTextView()
+        updateDateTextView()
         listeners()
 
     }
 
     private fun listeners() {
         binding.AddNewTodo.setOnClickListener {
-            isValidInputs()
+            if (!isValidInputs()) return@setOnClickListener
+            selectedDate.clearTime()
+
+            val title = binding.enterYourTitle.editText!!.text.toString()
+            val description = binding.description.editText!!.text.toString()
+
+            val newTodo = Todo(
+                title = title, description = description,
+                date = selectedDate.timeInMillis,
+                isDone = false
+            )
+            MyDataBase.getInstance(requireContext()).getTodosDao().addTodo(newTodo)
+            onAddClick.invoke()
+            dismiss()
         }
+
         binding.enterYourTitle.editText?.addTextChangedListener {
             isValidInputs()
         }

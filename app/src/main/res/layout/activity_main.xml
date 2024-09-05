@@ -9,14 +9,19 @@
 
     <include
         android:id="@+id/appBar"
-        layout="@layout/app_bar" />
+        layout="@layout/app_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
     <FrameLayout
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@id/coordinator"
-        app:layout_constraintTop_toBottomOf="@id/appBar" />
+        android:background="@color/gray_background"
+        app:layout_constraintTop_toBottomOf="@id/appBar">
+
+    </FrameLayout>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:id="@+id/coordinator"
@@ -33,12 +38,12 @@
             app:layout_constraintStart_toStartOf="parent">
 
             <com.google.android.material.bottomnavigation.BottomNavigationView
+                android:id="@+id/bottomNaviBar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:itemIconTint="@color/bottom_selected"
                 app:labelVisibilityMode="unlabeled"
-                app:menu="@menu/menu"
-                tools:layout_editor_absoluteY="675dp" />
+                app:menu="@menu/menu" />
         </com.google.android.material.bottomappbar.BottomAppBar>
 
 
